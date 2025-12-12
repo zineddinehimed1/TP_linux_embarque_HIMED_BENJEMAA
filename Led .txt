@@ -1,0 +1,54 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity tuto_fpga is
+    port (
+        i_clk   : in  std_logic;
+        i_rst_n : in  std_logic;
+        o_leds  : out std_logic_vector(9 downto 0)
+    );
+end entity tuto_fpga;
+
+architecture rtl of tuto_fpga is
+    constant C_MAX_COUNT : natural := 50000000; 
+    
+    signal r_blink_state : std_logic := '0'; 
+    
+    signal r_toggle_en   : std_logic := '0'; 
+
+begin
+
+    process(i_clk, i_rst_n)
+        variable v_counter : natural range 0 to C_MAX_COUNT := 0;
+    begin
+        if (i_rst_n = '0') then
+            v_counter := 0;
+            r_toggle_en <= '0';
+        elsif (rising_edge(i_clk)) then
+            if (v_counter = C_MAX_COUNT - 1) then
+                v_counter := 0;
+                r_toggle_en <= '1';
+            else
+                v_counter := v_counter + 1;
+                r_toggle_en <= '0';
+            end if;
+        end if;
+    end process;
+    
+   
+    process(i_clk, i_rst_n)
+    begin
+        if (i_rst_n = '0') then
+            r_blink_state <= '0'; 
+        elsif (rising_edge(i_clk)) then
+            if (r_toggle_en = '1') then
+                r_blink_state <= not r_blink_state; 
+            end if;
+        end if;
+    end process;
+
+    
+    o_leds <= (others => r_blink_state);
+
+end architecture rtl;

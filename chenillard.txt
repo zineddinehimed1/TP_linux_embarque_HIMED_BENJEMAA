@@ -1,0 +1,76 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity tuto_fpga is
+    port (
+        i_clk   : in  std_logic;
+        i_rst_n : in  std_logic;
+        o_leds  : out std_logic_vector(9 downto 0)
+    );
+end entity tuto_fpga;
+
+architecture rtl of tuto_fpga is
+    constant C_MAX_COUNT : natural := 5000000; 
+    
+    signal r_toggle_en   : std_logic := '0';
+    
+    
+    signal r_led_index   : unsigned(3 downto 0) := (others => '0');
+    
+    signal s_led_output  : std_logic_vector(9 downto 0) := (others => '0'); 
+
+begin
+
+    
+    process(i_clk, i_rst_n)
+        variable v_counter : natural range 0 to C_MAX_COUNT := 0;
+    begin
+        if (i_rst_n = '0') then
+            v_counter := 0;
+            r_toggle_en <= '0';
+        elsif (rising_edge(i_clk)) then
+            if (v_counter = C_MAX_COUNT - 1) then
+                v_counter := 0;
+                r_toggle_en <= '1';
+            else
+                v_counter := v_counter + 1;
+                r_toggle_en <= '0';
+            end if;
+        end if;
+    end process;
+    
+    
+    process(i_clk, i_rst_n)
+    begin
+        if (i_rst_n = '0') then
+            r_led_index <= (others => '0'); 
+        elsif (rising_edge(i_clk)) then
+            if (r_toggle_en = '1') then 
+                if (r_led_index = 9) then 
+                    r_led_index <= (others => '0'); 
+                else
+                    r_led_index <= r_led_index + 1;
+                end if;
+            end if;
+        end if;
+    end process;
+
+   
+    with to_integer(r_led_index) select
+        s_led_output <= 
+            "0000000001" when 0,  -- LED0
+            "0000000010" when 1,  -- LED1
+            "0000000100" when 2,  -- LED2
+            "0000001000" when 3,  -- LED3
+            "0000010000" when 4,  -- LED4
+            "0000100000" when 5,  -- LED5
+            "0001000000" when 6,  -- LED6
+            "0010000000" when 7,  -- LED7
+            "0100000000" when 8,  -- LED8
+            "1000000000" when 9,  -- LED9
+            (others => '0') when others; 
+
+    o_leds <= s_led_output;
+
+end architecture rtl;
