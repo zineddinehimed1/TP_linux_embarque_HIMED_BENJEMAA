@@ -62,6 +62,73 @@ Le sens de rotation est déterminé en observant l’état de l’autre signal a
 - `fallB` lorsque `A = 1`
 
 
+```vhdl
+-- Synchronisation des voies A et B (encodeur gauche)
+r_A_sync_left <= r_A_sync_left(0) & i_left_ch_a;
+r_B_sync_left <= r_B_sync_left(0) & i_left_ch_b;
+```
+sync(0) : état courant du signal
+sync(1) : état précédent du signal
+
+Cette étape permet d’éviter la métastabilité et de disposer de deux échantillons consécutifs pour détecter les fronts.
+
+## Implémentation de la solution en VHDL
+### Détection des fronts montants et descendants
+
+À partir des deux échantillons, on peut détecter les fronts :
+
+```vhdl
+v_A_rising  := (sync_A(0) = '1' and sync_A(1) = '0'); -- front montant
+v_A_falling := (sync_A(0) = '0' and sync_A(1) = '1'); -- front descendant
+```
+
+un front montant correspond à une transition 0 → 1
+un front descendant correspond à une transition 1 → 0
+Ces signaux sont des impulsions d’un seul cycle d’horloge.
+
+### Détermination du sens de rotation (quadrature)
+
+Un encodeur incrémental fournit deux signaux A et B en quadrature.
+Le sens de rotation est déterminé en observant le front détecté sur une voie et l’état instantané de l’autre voie.
+
+Incrémentation de la coordonnée : 
+```vhdl
+if (A_rising and B = '0') or (B_falling and A = '0') then
+    coord <= coord + 1;
+end if;
+```
+Décrémentation de la coordonnée : 
+```vhdl
+if (B_rising and A = '0') or (A_falling and B = '0') then
+    coord <= coord - 1;
+end if;
+```
+Cette logique permet de distinguer les deux sens de rotation de l’encodeur.
+
+###  Saturation des coordonnées
+
+Les coordonnées sont limitées à une plage valide (ici 10 bits) afin d’éviter tout débordement :
+```vhdl
+if coord < MAX_COORD then
+    coord <= coord + 1;
+end if;
+
+if coord > 0 then
+    coord <= coord - 1;
+end if;
+```
+
+### Conclusion :
+
+La gestion des encodeurs repose sur :
+- la synchronisation des entrées,
+- la détection des fronts,
+- l’exploitation de la quadrature A/B pour déterminer le sens,
+- la mise à jour sécurisée des coordonnées.
+
+Ce module fournit ainsi des coordonnées X et Y fiables, utilisables par la suite pour le déplacement du stylet sur l’écran magique.
+
+
 
 
 
