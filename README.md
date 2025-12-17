@@ -72,6 +72,9 @@ sync(1) : état précédent du signal
 
 Cette étape permet d’éviter la métastabilité et de disposer de deux échantillons consécutifs pour détecter les fronts.
 
+![leds avec encodeurs 1](./gestion_encodeur1.png)
+![leds avec encodeurs 2](./gestion_encodeur2.png)
+
 ## Implémentation de la solution en VHDL
 ### Détection des fronts montants et descendants
 
