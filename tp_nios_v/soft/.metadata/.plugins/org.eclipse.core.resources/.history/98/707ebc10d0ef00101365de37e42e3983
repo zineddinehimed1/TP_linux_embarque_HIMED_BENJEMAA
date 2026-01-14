@@ -1,0 +1,139 @@
+#include <stdint.h>
+#include <unistd.h>
+
+#include "system.h"
+#include "altera_avalon_pio_regs.h"
+#include "altera_avalon_i2c.h"
+
+/* --------- Réglages --------- */
+#define NLEDS            10
+
+// ADXL345 I2C 7-bit address (ALT ADDRESS pin = 0 => 0x53, =1 => 0x1D)
+#define ADXL345_ADDR     0x53
+
+// Registres ADXL345
+#define REG_DEVID        0x00
+#define REG_POWER_CTL    0x2D
+#define REG_DATA_FORMAT  0x31
+#define REG_DATAX0       0x32
+int16_t x;
+// Si tes LEDs sont actives à 0, mets 1, sinon 0
+#define LEDS_ACTIVE_LOW  0
+
+static inline uint32_t leds_apply_polarity(uint32_t onehot)
+{
+#if LEDS_ACTIVE_LOW
+    return (~onehot) & ((1u << NLEDS) - 1u);
+#else
+    return onehot & ((1u << NLEDS) - 1u);
+#endif
+}
+
+/* --------- Helpers I2C --------- */
+static ALT_AVALON_I2C_STATUS_CODE i2c_write_reg(ALT_AVALON_I2C_DEV_t *dev, uint8_t reg, uint8_t val)
+{
+    uint8_t buf[2] = { reg, val };
+    return alt_avalon_i2c_master_tx(dev, buf, 2, ALT_AVALON_I2C_NO_INTERRUPTS);
+}
+
+static ALT_AVALON_I2C_STATUS_CODE i2c_read_reg(ALT_AVALON_I2C_DEV_t *dev, uint8_t reg, uint8_t *val)
+{
+    return alt_avalon_i2c_master_tx_rx(dev, &reg, 1, val, 1, ALT_AVALON_I2C_NO_INTERRUPTS);
+}
+
+static ALT_AVALON_I2C_STATUS_CODE i2c_read_multi(ALT_AVALON_I2C_DEV_t *dev, uint8_t start_reg, uint8_t *rx, uint32_t n)
+{
+    return alt_avalon_i2c_master_tx_rx(dev, &start_reg, 1, rx, n, ALT_AVALON_I2C_NO_INTERRUPTS);
+}
+
+/* Map simple : on prend l’axe X et on le convertit en position LED 0..9.
+   Sans trig : on utilise des seuils (en "counts") -> facile et suffisant pour un niveau à bulle.
+   En pleine résolution +/-2g (10 bits), 1g ~ 256 counts typiquement.
+   On fait donc des seuils autour de 0.
+*/
+static int x_to_led_index(int16_t x)
+{
+    // Seuils (ajuste si tu veux une bulle plus/moins sensible)
+    // Ici on couvre environ [-1g .. +1g] en 10 pas.
+    const int16_t min = -256;  // ~ -1g
+    const int16_t max = +256;  // ~ +1g
+
+    if (x <= min) return 0;
+    if (x >= max) return NLEDS - 1;
+
+    // interpolation linéaire
+    int32_t num = (int32_t)(x - min) * (NLEDS - 1);
+    int32_t den = (max - min);
+    int idx = (int)(num / den);
+    if (idx < 0) idx = 0;
+    if (idx > NLEDS - 1) idx = NLEDS - 1;
+    return idx;
+}
+
+int main(void)
+{
+    /* --- Ouverture I2C --- */
+    ALT_AVALON_I2C_DEV_t *i2c_dev = alt_avalon_i2c_open(I2C_0_NAME);
+    if (!i2c_dev) {
+        // clignote toutes les LEDs si I2C open fail
+        while (1) {
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity((1u<<NLEDS)-1u));
+            usleep(200000);
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(0));
+            usleep(200000);
+        }
+    }
+
+    alt_avalon_i2c_master_target_set(i2c_dev, ADXL345_ADDR);
+
+    /* --- Test DEVID --- */
+    uint8_t devid = 0x00;
+    if (i2c_read_reg(i2c_dev, REG_DEVID, &devid) != ALT_AVALON_I2C_SUCCESS || devid != 0xE5) {
+        // affiche un motif d’erreur (2 LEDs) si pas le bon capteur / mauvaise adresse
+        while (1) {
+            uint32_t err = (1u<<0) | (1u<<NLEDS-1);
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(err));
+            usleep(150000);
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(0));
+            usleep(150000);
+        }
+    }
+
+    /* --- Init ADXL345 --- */
+    // Data format : FULL_RES=1 (bit 3), range=+-2g (bits 1:0 = 0)
+    // 0x08 = FULL_RES
+    (void)i2c_write_reg(i2c_dev, REG_DATA_FORMAT, 0x08);
+
+    // POWER_CTL : Measure = 1 (bit 3)
+    (void)i2c_write_reg(i2c_dev, REG_POWER_CTL, 0x08);
+
+    usleep(10000);
+
+    /* --- Boucle principale --- */
+    while (1)
+    {
+        uint8_t rx[6];
+        if (i2c_read_multi(i2c_dev, REG_DATAX0, rx, 6) == ALT_AVALON_I2C_SUCCESS)
+        {
+            int16_t x = (int16_t)((rx[1] << 8) | rx[0]);
+            int16_t y = (int16_t)((rx[3] << 8) | rx[2]);
+            int16_t z = (int16_t)((rx[5] << 8) | rx[4]);
+
+            (void)y; (void)z; // si tu veux aussi faire un niveau 2D plus tard
+
+            int idx = x_to_led_index(x);
+            uint32_t onehot = (1u << idx);
+
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(onehot));
+        }
+        else
+        {
+            // si lecture I2C échoue ponctuellement, on éteint
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(0));
+        }
+
+        usleep(30000); // ~33 Hz
+    }
+
+    return 0;
+}

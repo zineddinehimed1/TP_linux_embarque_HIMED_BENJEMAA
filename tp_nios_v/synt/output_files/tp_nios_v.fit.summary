@@ -1,0 +1,20 @@
+Fitter Status : Successful - Mon Jan 12 18:20:14 2026
+Quartus Prime Version : 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+Revision Name : tp_nios_v
+Top-level Entity Name : telecran
+Family : Cyclone V
+Device : 5CSEBA6U23I7
+Timing Models : Final
+Logic utilization (in ALMs) : 310 / 41,910 ( < 1 % )
+Total registers : 185
+Total pins : 57 / 314 ( 18 % )
+Total virtual pins : 0
+Total block memory bits : 2,764,800 / 5,662,720 ( 49 % )
+Total RAM Blocks : 338 / 553 ( 61 % )
+Total DSP Blocks : 1 / 112 ( < 1 % )
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total PLLs : 1 / 6 ( 17 % )
+Total DLLs : 0 / 4 ( 0 % )

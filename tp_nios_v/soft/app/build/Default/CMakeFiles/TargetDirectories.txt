@@ -1,0 +1,9 @@
+C:/Users/Superviseur/Documents/tp_nios_v/soft/app/build/Default/CMakeFiles/app.elf.dir
+C:/Users/Superviseur/Documents/tp_nios_v/soft/app/build/Default/CMakeFiles/create-objdump.dir
+C:/Users/Superviseur/Documents/tp_nios_v/soft/app/build/Default/CMakeFiles/niosv-stack-report.dir
+C:/Users/Superviseur/Documents/tp_nios_v/soft/app/build/Default/CMakeFiles/create-hex.dir
+C:/Users/Superviseur/Documents/tp_nios_v/soft/app/build/Default/CMakeFiles/edit_cache.dir
+C:/Users/Superviseur/Documents/tp_nios_v/soft/app/build/Default/CMakeFiles/rebuild_cache.dir
+C:/Users/Superviseur/Documents/tp_nios_v/soft/app/build/Default/bsp/CMakeFiles/hal2_bsp.dir
+C:/Users/Superviseur/Documents/tp_nios_v/soft/app/build/Default/bsp/CMakeFiles/edit_cache.dir
+C:/Users/Superviseur/Documents/tp_nios_v/soft/app/build/Default/bsp/CMakeFiles/rebuild_cache.dir

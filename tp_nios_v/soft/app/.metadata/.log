@@ -1,0 +1,221 @@
+!SESSION 2026-01-12 13:45:33.206 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=21.0.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_FR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.ashling.riscfree.debug.niosv.import.wizard.cmake 4 4 2026-01-12 13:46:42.677
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:211)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:95)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:305)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:291)
+	at org.eclipse.cdt.core.CCorePlugin$2.run(CCorePlugin.java:967)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:962)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:957)
+	at com.ashling.riscfree.debug.niosv.cmake.wizard.ui.CmakeImportWizard$1.execute(CmakeImportWizard.java:87)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.lambda$0(WorkspaceModifyOperation.java:112)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2476)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:131)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Contains: OK
+Contains: C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2026-01-12 13:46:42.677
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2026-01-12 13:46:42.677
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2026-01-12 13:46:42.677
+!MESSAGE C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+
+!ENTRY com.ashling.riscfree.debug.niosv.import.wizard.cmake 4 4 2026-01-12 13:47:13.464
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:211)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:95)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:305)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:291)
+	at org.eclipse.cdt.core.CCorePlugin$2.run(CCorePlugin.java:967)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:962)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:957)
+	at com.ashling.riscfree.debug.niosv.cmake.wizard.ui.CmakeImportWizard$1.execute(CmakeImportWizard.java:87)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.lambda$0(WorkspaceModifyOperation.java:112)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2476)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:131)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Contains: OK
+Contains: C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2026-01-12 13:47:13.464
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2026-01-12 13:47:13.464
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2026-01-12 13:47:13.464
+!MESSAGE C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+
+!ENTRY com.ashling.riscfree.debug.niosv.import.wizard.cmake 4 4 2026-01-12 13:47:27.492
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:211)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:95)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:305)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:291)
+	at org.eclipse.cdt.core.CCorePlugin$2.run(CCorePlugin.java:967)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:962)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:957)
+	at com.ashling.riscfree.debug.niosv.cmake.wizard.ui.CmakeImportWizard$1.execute(CmakeImportWizard.java:87)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.lambda$0(WorkspaceModifyOperation.java:112)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2476)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:131)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Contains: OK
+Contains: C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2026-01-12 13:47:27.492
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2026-01-12 13:47:27.492
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2026-01-12 13:47:27.492
+!MESSAGE C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-01-12 13:48:27.883
+!MESSAGE Indexed 'bsp' (85 sources, 83 headers) in 1,27 sec: 1 891 declarations; 3 770 references; 144 unresolved inclusions; 6 syntax errors; 460 unresolved names (7,5 %)
+
+!ENTRY com.ashling.riscfree.debug.niosv.import.wizard.cmake 4 4 2026-01-12 13:48:45.752
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:211)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:95)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:305)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:291)
+	at org.eclipse.cdt.core.CCorePlugin$2.run(CCorePlugin.java:967)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:962)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:957)
+	at com.ashling.riscfree.debug.niosv.cmake.wizard.ui.CmakeImportWizard$1.execute(CmakeImportWizard.java:87)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.lambda$0(WorkspaceModifyOperation.java:112)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2476)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:131)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Contains: OK
+Contains: C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2026-01-12 13:48:45.752
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2026-01-12 13:48:45.752
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2026-01-12 13:48:45.752
+!MESSAGE C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+
+!ENTRY com.ashling.riscfree.debug.niosv.import.wizard.cmake 4 4 2026-01-12 13:49:07.368
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:211)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:95)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:305)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:291)
+	at org.eclipse.cdt.core.CCorePlugin$2.run(CCorePlugin.java:967)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:962)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:957)
+	at com.ashling.riscfree.debug.niosv.cmake.wizard.ui.CmakeImportWizard$1.execute(CmakeImportWizard.java:87)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.lambda$0(WorkspaceModifyOperation.java:112)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2476)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:131)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Contains: OK
+Contains: C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2026-01-12 13:49:07.368
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2026-01-12 13:49:07.368
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2026-01-12 13:49:07.368
+!MESSAGE C:\Users\Superviseur\Documents\tp_nios_v\soft\app overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+
+!ENTRY com.ashling.riscfree.debug.niosv.import.wizard.cmake 4 4 2026-01-12 13:50:07.879
+!MESSAGE Invalid project description.
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Invalid project description.
+	at org.eclipse.core.internal.resources.Project.checkDescription(Project.java:211)
+	at org.eclipse.core.internal.resources.Project.assertCreateRequirements(Project.java:95)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:305)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:291)
+	at org.eclipse.cdt.core.CCorePlugin$2.run(CCorePlugin.java:967)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:962)
+	at org.eclipse.cdt.core.CCorePlugin.createCDTProject(CCorePlugin.java:957)
+	at com.ashling.riscfree.debug.niosv.cmake.wizard.ui.CmakeImportWizard$1.execute(CmakeImportWizard.java:87)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.lambda$0(WorkspaceModifyOperation.java:112)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2451)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2476)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:131)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Contains: OK
+Contains: C:\Users\Superviseur\Documents\tp_nios_v\soft overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2026-01-12 13:50:07.879
+!MESSAGE Invalid project description.
+!SUBENTRY 2 unknown 0 0 2026-01-12 13:50:07.879
+!MESSAGE OK
+!SUBENTRY 2 org.eclipse.core.resources 4 77 2026-01-12 13:50:07.879
+!MESSAGE C:\Users\Superviseur\Documents\tp_nios_v\soft overlaps the workspace location: C:\Users\Superviseur\Documents\tp_nios_v\soft\app
+
+!ENTRY org.eclipse.cdt.core 4 0 2026-01-12 13:50:20.895
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Exception in org.eclipse.cdt.core.CCorePlugin.stop() of bundle org.eclipse.cdt.core.
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.stop(BundleContextImpl.java:923)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.stopWorker0(EquinoxBundle.java:1071)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$EquinoxModule.stopWorker(EquinoxBundle.java:392)
+	at org.eclipse.osgi.container.Module.doStop(Module.java:695)
+	at org.eclipse.osgi.container.Module.stop(Module.java:554)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.decStartLevel(ModuleContainer.java:2116)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1986)
+	at org.eclipse.osgi.container.SystemModule.stopWorker(SystemModule.java:281)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$SystemBundle$EquinoxSystemModule.stopWorker(EquinoxBundle.java:222)
+	at org.eclipse.osgi.container.Module.doStop(Module.java:695)
+	at org.eclipse.osgi.container.Module.stop(Module.java:554)
+	at org.eclipse.osgi.container.SystemModule.stop(SystemModule.java:212)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$SystemBundle$EquinoxSystemModule$1.run(EquinoxBundle.java:240)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.NullPointerException: Cannot invoke "org.eclipse.core.runtime.content.IContentTypeManager.removeContentTypeChangeListener(org.eclipse.core.runtime.content.IContentTypeManager$IContentTypeChangeListener)" because the return value of "org.eclipse.core.runtime.Platform.getContentTypeManager()" is null
+	at org.eclipse.cdt.internal.core.model.CModelManager.shutdown(CModelManager.java:1378)
+	at org.eclipse.cdt.core.model.CoreModel.shutdown(CoreModel.java:1156)
+	at org.eclipse.cdt.core.CCorePlugin.stop(CCorePlugin.java:375)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$3.run(BundleContextImpl.java:903)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$3.run(BundleContextImpl.java:1)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.stop(BundleContextImpl.java:895)
+	... 13 more
+Root exception:
+java.lang.NullPointerException: Cannot invoke "org.eclipse.core.runtime.content.IContentTypeManager.removeContentTypeChangeListener(org.eclipse.core.runtime.content.IContentTypeManager$IContentTypeChangeListener)" because the return value of "org.eclipse.core.runtime.Platform.getContentTypeManager()" is null
+	at org.eclipse.cdt.internal.core.model.CModelManager.shutdown(CModelManager.java:1378)
+	at org.eclipse.cdt.core.model.CoreModel.shutdown(CoreModel.java:1156)
+	at org.eclipse.cdt.core.CCorePlugin.stop(CCorePlugin.java:375)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$3.run(BundleContextImpl.java:903)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$3.run(BundleContextImpl.java:1)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.stop(BundleContextImpl.java:895)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.stopWorker0(EquinoxBundle.java:1071)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$EquinoxModule.stopWorker(EquinoxBundle.java:392)
+	at org.eclipse.osgi.container.Module.doStop(Module.java:695)
+	at org.eclipse.osgi.container.Module.stop(Module.java:554)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.decStartLevel(ModuleContainer.java:2116)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1986)
+	at org.eclipse.osgi.container.SystemModule.stopWorker(SystemModule.java:281)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$SystemBundle$EquinoxSystemModule.stopWorker(EquinoxBundle.java:222)
+	at org.eclipse.osgi.container.Module.doStop(Module.java:695)
+	at org.eclipse.osgi.container.Module.stop(Module.java:554)
+	at org.eclipse.osgi.container.SystemModule.stop(SystemModule.java:212)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$SystemBundle$EquinoxSystemModule$1.run(EquinoxBundle.java:240)
+	at java.base/java.lang.Thread.run(Thread.java:1583)

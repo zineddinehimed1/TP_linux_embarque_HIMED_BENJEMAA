@@ -1,0 +1,135 @@
+#include <stdint.h>
+#include <unistd.h>
+
+#include "system.h"
+#include "altera_avalon_pio_regs.h"
+#include "altera_avalon_i2c.h"
+
+/* --------- Réglages --------- */
+#define NLEDS            10
+
+// ADXL345 I2C 7-bit address (ALT ADDRESS pin = 0 => 0x53, =1 => 0x1D)
+#define ADXL345_ADDR     0x53
+
+// Registres ADXL345
+#define REG_DEVID        0x00
+#define REG_POWER_CTL    0x2D
+#define REG_DATA_FORMAT  0x31
+#define REG_DATAX0       0x32
+
+// Si tes LEDs sont actives à 0, mets 1, sinon 0
+#define LEDS_ACTIVE_LOW  0
+
+/* --------- Variables globales pour Live Expressions --------- */
+volatile int16_t g_x = 0;
+volatile int16_t g_y = 0;
+volatile int16_t g_z = 0;
+
+volatile int     g_idx = 0;
+volatile uint8_t g_devid = 0;
+
+volatile ALT_AVALON_I2C_STATUS_CODE g_i2c_status = ALT_AVALON_I2C_SUCCESS;
+
+static inline uint32_t leds_apply_polarity(uint32_t onehot)
+{
+#if LEDS_ACTIVE_LOW
+    return (~onehot) & ((1u << NLEDS) - 1u);
+#else
+    return onehot & ((1u << NLEDS) - 1u);
+#endif
+}
+
+/* --------- Helpers I2C --------- */
+static ALT_AVALON_I2C_STATUS_CODE i2c_write_reg(ALT_AVALON_I2C_DEV_t *dev, uint8_t reg, uint8_t val)
+{
+    uint8_t buf[2] = { reg, val };
+    return alt_avalon_i2c_master_tx(dev, buf, 2, ALT_AVALON_I2C_NO_INTERRUPTS);
+}
+
+static ALT_AVALON_I2C_STATUS_CODE i2c_read_reg(ALT_AVALON_I2C_DEV_t *dev, uint8_t reg, uint8_t *val)
+{
+    return alt_avalon_i2c_master_tx_rx(dev, &reg, 1, val, 1, ALT_AVALON_I2C_NO_INTERRUPTS);
+}
+
+static ALT_AVALON_I2C_STATUS_CODE i2c_read_multi(ALT_AVALON_I2C_DEV_t *dev, uint8_t start_reg, uint8_t *rx, uint32_t n)
+{
+    return alt_avalon_i2c_master_tx_rx(dev, &start_reg, 1, rx, n, ALT_AVALON_I2C_NO_INTERRUPTS);
+}
+
+/* Map simple : Y -> LED 0..9 */
+static int y_to_led_index(int16_t y)
+{
+    const int16_t min = -256;  // ~ -1g
+    const int16_t max = +256;  // ~ +1g
+
+    if (y <= min) return 0;
+    if (y >= max) return NLEDS - 1;
+
+    int32_t num = (int32_t)(y - min) * (NLEDS - 1);
+    int32_t den = (max - min);
+    int idx = (int)(num / den);
+
+    if (idx < 0) idx = 0;
+    if (idx > NLEDS - 1) idx = NLEDS - 1;
+    return idx;
+}
+
+int main(void)
+{
+    /* --- Ouverture I2C --- */
+    ALT_AVALON_I2C_DEV_t *i2c_dev = alt_avalon_i2c_open(I2C_0_NAME);
+    if (!i2c_dev) {
+        while (1) {
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity((1u << NLEDS) - 1u));
+            usleep(200000);
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(0));
+            usleep(200000);
+        }
+    }
+
+    alt_avalon_i2c_master_target_set(i2c_dev, ADXL345_ADDR);
+
+    /* --- Test DEVID --- */
+    g_i2c_status = i2c_read_reg(i2c_dev, REG_DEVID, (uint8_t*)&g_devid);
+    if (g_i2c_status != ALT_AVALON_I2C_SUCCESS || g_devid != 0xE5) {
+        while (1) {
+            uint32_t err = (1u << 0) | (1u << (NLEDS - 1));
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(err));
+            usleep(150000);
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(0));
+            usleep(150000);
+        }
+    }
+
+    /* --- Init ADXL345 --- */
+    i2c_write_reg(i2c_dev, REG_DATA_FORMAT, 0x08);
+    i2c_write_reg(i2c_dev, REG_POWER_CTL, 0x08);
+
+    usleep(10000);
+
+    /* --- Boucle principale --- */
+    while (1)
+    {
+        uint8_t rx[6];
+        g_i2c_status = i2c_read_multi(i2c_dev, REG_DATAX0, rx, 6);
+
+        if (g_i2c_status == ALT_AVALON_I2C_SUCCESS)
+        {
+            g_x = (int16_t)((rx[1] << 8) | rx[0]);
+            g_y = (int16_t)((rx[3] << 8) | rx[2]);
+            g_z = (int16_t)((rx[5] << 8) | rx[4]);
+
+            // 👉 On utilise Y pour afficher le niveau
+            g_idx = y_to_led_index(g_y);
+
+            uint32_t onehot = (1u << g_idx);
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(onehot));
+        }
+        else
+        {
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, leds_apply_polarity(0));
+        }
+
+        usleep(30000);
+    }
+}

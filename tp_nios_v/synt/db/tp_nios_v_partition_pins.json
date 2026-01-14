@@ -1,0 +1,197 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "o_hdmi_tx_d[0]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[1]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[2]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[3]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[4]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[5]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[6]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[7]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[8]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[9]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[10]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[11]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[12]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[13]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[14]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[15]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[16]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[17]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[18]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[19]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[20]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[21]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[22]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_d[23]",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_de",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_hs",
+					"strict" : false
+				},
+				{
+					"name" : "o_hdmi_tx_vs",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[0]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[1]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[2]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[3]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[4]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[5]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[6]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[7]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[8]",
+					"strict" : false
+				},
+				{
+					"name" : "o_leds[9]",
+					"strict" : false
+				},
+				{
+					"name" : "io_hdmi_i2c_scl",
+					"strict" : false
+				},
+				{
+					"name" : "io_hdmi_i2c_sda",
+					"strict" : false
+				},
+				{
+					"name" : "i_clk_50",
+					"strict" : false
+				},
+				{
+					"name" : "i_rst_n",
+					"strict" : false
+				},
+				{
+					"name" : "i_left_pb",
+					"strict" : false
+				},
+				{
+					"name" : "i_left_ch_b",
+					"strict" : false
+				},
+				{
+					"name" : "i_left_ch_a",
+					"strict" : false
+				},
+				{
+					"name" : "i_right_ch_b",
+					"strict" : false
+				},
+				{
+					"name" : "i_right_ch_a",
+					"strict" : false
+				},
+				{
+					"name" : "i_hdmi_tx_int",
+					"strict" : false
+				}
+			]
+		}
+	]
+}

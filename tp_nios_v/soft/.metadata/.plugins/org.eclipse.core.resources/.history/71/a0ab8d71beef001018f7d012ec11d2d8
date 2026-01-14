@@ -1,0 +1,35 @@
+#include <unistd.h>  // usleep
+#include <stdint.h>
+
+#include "system.h"
+#include "altera_avalon_pio_regs.h"
+
+int main(void)
+{
+    // Nombre de LEDs (d'après ton tableau : LED0 .. LED9)
+    const int NLEDS = 10;
+
+    // Délai entre deux pas (en microsecondes)
+    const useconds_t DELAY_US = 100000; // 100 ms
+
+    while (1)
+    {
+        // Aller : LED0 -> LED9
+        for (int i = 0; i < NLEDS; i++)
+        {
+            uint32_t pattern = (1u << i); // un seul bit à 1
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, pattern);
+            usleep(DELAY_US);
+        }
+
+        // Retour : LED8 -> LED1 (pour éviter de répéter LED9 puis LED0)
+        for (int i = NLEDS - 2; i >= 1; i--)
+        {
+            uint32_t pattern = (1u << i);
+            IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, pattern);
+            usleep(DELAY_US);
+        }
+    }
+
+    return 0;
+}
