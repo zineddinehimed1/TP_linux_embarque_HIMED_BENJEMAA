@@ -432,6 +432,16 @@ s_mux_data_a <= x"00" when r_erase_active = '1' else x"FF";
 
 ![Aprés effacement](./Aprés_effacement.png)
 
+## Conclusion
+
+Ce projet a permis de réaliser une version numérique d’un **écran magique** sur FPGA.  
+Les différentes étapes ont conduit à la mise en œuvre de la gestion des encodeurs, du contrôleur HDMI, de l’affichage d’un pixel mobile, de la mémorisation des pixels via un framebuffer et enfin de l’effacement complet de l’écran.
+
+Le système final permet de **dessiner, conserver et effacer** un tracé en temps réel à l’aide des encodeurs, tout en générant un affichage HDMI fonctionnel.
+
+Ce projet illustre l’intégration de plusieurs briques matérielles (entrées utilisateur, vidéo, mémoire) pour concevoir une application graphique embarquée.
+
+
 
 
 
