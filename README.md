@@ -131,6 +131,81 @@ La gestion des encodeurs repose sur :
 
 Ce module fournit ainsi des coordonnées X et Y fiables, utilisables par la suite pour le déplacement du stylet sur l’écran magique.
 
+## 2. Contrôleur HDMI
+
+### Objectif
+
+- Réutiliser le composant `hdmi_controler` développé en TD.
+- Générer les signaux vidéo (HS, VS, DE).
+- Récupérer les coordonnées pixel `x` et `y`.
+- Produire une image de test visible à l’écran.
+- Vérifier la correspondance des composantes couleur.
+
+---
+
+### Instanciation du contrôleur HDMI
+
+Le contrôleur est cadencé par l’horloge issue de la PLL.
+
+```vhdl
+u_hdmi : entity work.hdmi_controler
+port map (
+  i_clk   => s_clk_27,
+  i_rst_n => s_rst_n,
+
+  o_hdmi_hs => o_hdmi_hs,
+  o_hdmi_vs => o_hdmi_vs,
+  o_hdmi_de => o_hdmi_de,
+
+  o_pixel_en      => open,
+  o_pixel_address => open,
+  o_x_counter     => s_x_counter,
+  o_y_counter     => s_y_counter
+);
+```
+
+### Rôle des signaux importants :
+o_hdmi_hs, o_hdmi_vs : synchronisations horizontale et verticale
+o_hdmi_de : Data Enable (zone visible)
+o_x_counter, o_y_counter : coordonnées du pixel courant
+
+### Génération d’une image de test :
+Pour valider le pipeline HDMI, on génère une image simple à partir des compteurs x et y.
+
+o_hdmi_tx_d(23 downto 16) <= std_logic_vector(to_unsigned(s_x_counter, 8)); -- Rouge
+o_hdmi_tx_d(15 downto 8)  <= std_logic_vector(to_unsigned(s_y_counter, 8)); -- Vert
+o_hdmi_tx_d(7 downto 0)   <= (others => '0');                                -- Bleu
+
+On obtient un dégradé :
+horizontal → rouge
+vertical → vert
+
+### Correspondance des bits couleur :
+
+Le bus vidéo est codé sur 24 bits (RGB 8:8:8) :
+o_hdmi_tx_d(23 downto 16) → Rouge (R)
+o_hdmi_tx_d(15 downto 8) → Vert (G)
+o_hdmi_tx_d(7 downto 0) → Bleu (B)
+
+### Résultat obtenu :
+
+![image affichée](./Test_HDMI_Controller.png)
+
+L’écran affiche des carrés en dégradé rouge/vert, confirmant le bon fonctionnement du contrôleur HDMI.
+Cette image valide :
+les timings HS / VS / DE,
+les compteurs X et Y,
+la génération correcte des pixels.
+
+### Conclusion :
+
+Le contrôleur HDMI est fonctionnel et correctement intégré.
+Le système est maintenant prêt pour les étapes suivantes :
+affichage du curseur et implémentation de l’écran magique.
+
+
+
+
 
 
 
