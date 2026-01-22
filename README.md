@@ -261,6 +261,88 @@ o_hdmi_tx_d <= x"FFFFFF"
 
 ![Résultat](./pixel_deplac.png)
 
+## 4. Mémorisation (framebuffer)
+
+Cette étape permet de “dessiner” comme sur un vrai écran magique : les pixels déjà parcourus restent allumés.  
+Pour cela, on utilise un **framebuffer** stocké dans une mémoire RAM **dual-port** (fichier `dpram.vhd`).
+
+---
+
+### 4.1 Qu’est-ce qu’une mémoire dual-port ?
+
+Une mémoire **dual-port** possède **deux ports d’accès indépendants** (souvent appelés Port A et Port B).  
+Chaque port dispose de ses propres signaux (`clk`, `addr`, `data`, `we`, `q`) et permet :
+
+- soit **deux accès simultanés** (par exemple : écriture + lecture en même temps),
+- soit deux accès à des adresses différentes au même instant.
+
+Dans notre cas :
+- **Port A** : utilisé pour **écrire** les pixels “dessinés” (coordonnées issues des encodeurs)
+- **Port B** : utilisé pour **lire** la mémoire au rythme vidéo (coordonnées issues du contrôleur HDMI)
+
+---
+
+### 4.2 Schéma de principe (framebuffer)
+
+- Encodeurs → `(x_draw, y_draw)`  
+- Calcul d’adresse : `addr_draw = x_draw + y_draw * h_res`  
+- Écriture Port A : écrire `0xFF` (pixel allumé) à `addr_draw`
+
+- Contrôleur HDMI → `pixel_address` (ou `(x_counter, y_counter)`)  
+- Lecture Port B : lire `pixel_data` au rythme HDMI  
+- Affichage : si `pixel_data == 0xFF` → blanc, sinon noir
+
+---
+
+### 4.3 Connexions importantes dans `telecran.vhd`
+
+#### a) Calcul de l’adresse d’écriture (pixel dessiné)
+
+On convertit les coordonnées (X,Y) en une adresse linéaire :
+
+```vhdl
+addr_draw <= to_integer(s_coord_x) + (to_integer(s_coord_y) * 720);
+```
+#### b) Instanciation DPRAM (Port A = écriture, Port B = lecture) : 
+
+```vhdl
+U_FrameBuffer : dpram
+port map (
+  -- Port A : écriture "dessin" (cadencé à 50 MHz)
+  i_clk_a  => i_clk_50,
+  i_addr_a => addr_draw,
+  i_data_a => x"FF",     -- pixel allumé
+  i_we_a   => '1',
+  o_q_a    => open,
+
+  -- Port B : lecture vidéo (cadencé horloge pixel)
+  i_clk_b  => s_clk_27,
+  i_addr_b => s_pixel_address,
+  i_data_b => (others => '0'),
+  i_we_b   => '0',
+  o_q_b    => s_pixel_data
+);
+```
+Remarque : le contrôleur HDMI fournit déjà o_pixel_address, ce qui évite de recalculer x + y*h_res côté lecture.
+
+
+### 4.4 Modification du signal o_hdmi_tx_d : 
+
+Au lieu d’afficher un pixel mobile, on affiche maintenant le contenu du framebuffer :
+
+```vhdl
+o_hdmi_tx_d <= x"FFFFFF" when s_pixel_data = x"FF" else x"000000";
+```
+- x"FF" dans la RAM → pixel mémorisé → blanc
+- sinon → noir
+
+![Mémorisation](./Dessin_Memo.png)
+
+
+
+
+
+
 
 
 
