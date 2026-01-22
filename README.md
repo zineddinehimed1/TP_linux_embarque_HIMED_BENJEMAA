@@ -529,6 +529,84 @@ Ce test valide :
 - la communication PC ↔ FPGA.
 
 
+# TP FPGA Avancé – Chenillard
+
+## Objectif
+
+Cette étape consiste à réaliser un **chenillard sur les LED** afin de valider le bon fonctionnement du système et la génération d’un signal périodique.  
+Une seule LED est allumée à la fois et le point lumineux se déplace régulièrement.
+
+---
+
+## Principe du chenillard
+
+Le fonctionnement repose sur trois blocs essentiels :
+
+1. **Un compteur temporel** pour ralentir le défilement  
+2. **Un index de LED** qui évolue de 0 à 9  
+3. **Un décodage “one-hot”** pour allumer une seule LED à la fois  
+
+---
+
+## 1. Génération d’une impulsion lente
+
+Un compteur interne permet de créer un signal `r_toggle_en` qui passe à `1` périodiquement.  
+C’est ce signal qui cadence le déplacement du chenillard.
+
+```vhdl
+if (v_counter = C_MAX_COUNT - 1) then
+    v_counter := 0;
+    r_toggle_en <= '1';
+else
+    v_counter := v_counter + 1;
+    r_toggle_en <= '0';
+end if;
+```
+Cette partie permet de ralentir l’évolution pour rendre le mouvement visible.
+
+## 2. Mise à jour de l’index de LED
+À chaque impulsion, l’index de la LED active est incrémenté.
+```vhdl
+if (r_toggle_en = '1') then 
+    if (r_led_index = 9) then 
+        r_led_index <= (others => '0'); 
+    else
+        r_led_index <= r_led_index + 1;
+    end if;
+end if;
+```
+L’index évolue de 0 à 9, puis revient à 0.
+
+## 3. Décodage vers les LED (one-hot)
+L’index est transformé en mot binaire pour n’allumer qu’une seule LED.
+```vhdl
+with to_integer(r_led_index) select
+    s_led_output <= 
+        "0000000001" when 0,
+        "0000000010" when 1,
+        ...
+        "1000000000" when 9,
+        (others => '0') when others;
+```
+Une seule LED est active à la fois, ce qui crée l’effet de chenillard.
+
+## Résultat attendu
+Sur la carte :
+- une LED est allumée,
+- le point lumineux se déplace régulièrement,
+- après la dernière LED, le chenillard recommence au début.
+
+![Chenillard](./chenillard.gif)
+
+## Conclusion
+
+Ce chenillard permet de valider :
+- la génération de temporisations,
+- l’utilisation de compteurs et registres,
+- le pilotage des LED.
+
+Il constitue une base simple et visuelle avant l’intégration avec le soft-processeur Nios V.
+
 
 
 
