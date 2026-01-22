@@ -529,7 +529,7 @@ Ce test valide :
 - la communication PC ↔ FPGA.
 
 
-# 4. Chenillard
+## 4. Chenillard
 
 ### Objectif
 
@@ -607,6 +607,110 @@ Ce chenillard permet de valider :
 
 Il constitue une base simple et visuelle avant l’intégration avec le soft-processeur Nios V.
 
+##  5. Petit projet – ADXL345  (Niveau à bulles et effacement par retournement)
+
+Ce projet exploite l’accéléromètre **ADXL345** présent sur la carte afin de :
+- afficher l’inclinaison sous forme de **niveau à bulles** sur les LED,
+- déclencher un **effacement** lorsque la carte est retournée, comme sur un vrai écran magique.
+
+---
+
+### Étape 1 – Ajout du contrôleur I2C au soft-processeur
+
+Dans **Platform Designer**, un contrôleur **Avalon I2C (Master)** est ajouté au système Nios V.
+
+Il est connecté :
+- à l’horloge et au reset du système,
+- au bus Avalon du processeur,
+- aux broches externes I2C de la carte (SCL, SDA).
+
+Après génération du système, une nouvelle base apparaît dans le BSP (ex : `I2C_0_NAME`).
+
+---
+
+### Étape 2 – Modification du VHDL
+
+Le top-level VHDL est modifié pour connecter les lignes I2C en **open-drain** :
+
+```vhdl
+s_i2c_scl_in <= io_i2c_scl;
+io_i2c_scl   <= '0' when s_i2c_scl_oe = '1' else 'Z';
+
+s_i2c_sda_in <= io_i2c_sda;
+io_i2c_sda   <= '0' when s_i2c_sda_oe = '1' else 'Z';
+```
+Ces signaux sont ensuite reliés au composant Nios généré par Platform Designer.
+
+### Étape 3 – Régénération BSP et application
+Après modification du système matériel :
+- le dossier bsp est supprimé
+- tous les fichiers du dossier app sont supprimés sauf main.c
+- la BSP et l’application sont recréées
+- les projets sont réimportés dans RiscFree
+
+À ce stade, le chenillard est toujours fonctionnel.
+
+### Étape 4 – Initialisation et test de l’ADXL345
+Ouverture du périphérique I2C et test de présence du capteur :
+```c
+ALT_AVALON_I2C_DEV_t *i2c_dev = alt_avalon_i2c_open(I2C_0_NAME);
+alt_avalon_i2c_master_target_set(i2c_dev, ADXL345_ADDR);
+
+i2c_read_reg(i2c_dev, REG_DEVID, &g_devid);   // doit valoir 0xE5
+```
+Initialisation du capteur :
+```c
+i2c_write_reg(i2c_dev, REG_DATA_FORMAT, 0x08); // FULL_RES, ±2g
+i2c_write_reg(i2c_dev, REG_POWER_CTL,   0x08); // mode mesure
+```
+### Étape 5 – Lecture des accélérations
+Lecture des trois axes X, Y et Z :
+```c
+i2c_read_multi(i2c_dev, REG_DATAX0, rx, 6);
+
+g_x = (int16_t)((rx[1] << 8) | rx[0]);
+g_y = (int16_t)((rx[3] << 8) | rx[2]);
+g_z = (int16_t)((rx[5] << 8) | rx[4]);
+```
+### Étape 6 – Niveau à bulles (LED)
+La valeur de l’axe Y est transformée en un index de LED :
+```c
+g_idx = y_to_led_index(g_y);
+leds_write(1u << g_idx);
+```
+![Niveau à bulles](./niveau_a_bulles.gif)
+
+Une seule LED est allumée et se déplace lorsque l’on incline la carte, reproduisant un niveau à bulles.
+
+### Étape 7 – Détection du retournement et effacement
+Détection du retournement via l’axe Z avec hystérésis :
+```c
+if (!is_flipped && g_z < Z_FLIP_NEG_TH) {
+    is_flipped = 1;
+    wipe_animation();
+} else if (is_flipped && g_z > Z_FLIP_POS_TH) {
+    is_flipped = 0;
+}
+L’animation d’effacement :
+static void wipe_animation(void)
+{
+    for (int i = 0; i < NLEDS; i++) {
+        uint32_t mask = ((1u << NLEDS) - 1u) & ~((1u << (i + 1)) - 1u);
+        leds_write(mask);
+        usleep(50000);
+    }
+}
+```
+Le retournement de la carte déclenche un effacement progressif, reproduisant le comportement d’un écran magique.
+
+### Conclusion
+Ce projet met en œuvre :
+- l’intégration d’un périphérique I2C dans un système Nios V
+- la communication avec un capteur réel (ADXL345)
+- un traitement logiciel temps réel
+- et une interaction physique directe avec la carte
+
+Il illustre concrètement le co-design matériel / logiciel et l’utilisation de capteurs dans un système embarqué sur FPGA.
 
 
 
