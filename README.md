@@ -204,7 +204,62 @@ Le système est maintenant prêt pour les étapes suivantes :
 affichage du curseur et implémentation de l’écran magique.
 
 
+## 3. Déplacement d’un pixel
 
+Cette étape consiste à afficher **un seul pixel blanc** qui se déplace en fonction des deux encodeurs :
+- encodeur gauche → déplacement horizontal (**X**)
+- encodeur droit → déplacement vertical (**Y**)
+
+Le contrôleur HDMI fournit les coordonnées du pixel en cours d’affichage grâce aux compteurs :
+- `o_x_counter` : coordonnée X (0 → h_res-1)
+- `o_y_counter` : coordonnée Y (0 → v_res-1)
+
+Le module `encoder_manager` fournit la position du “stylet” :
+- `s_coord_x` : position X (encodeur gauche)
+- `s_coord_y` : position Y (encodeur droit)
+
+---
+
+### Principe demandé par l’énoncé
+
+On affiche la couleur **blanche** (`x"FFFFFF"`) si et seulement si :
+
+- `x_counter == coord_x` **ET**
+- `y_counter == coord_y`
+
+Sinon, on affiche la couleur **noire** (`x"000000"`).
+
+---
+
+### Modifications dans `telecran.vhd`
+
+1) Récupérer les compteurs X/Y du contrôleur HDMI (ne pas les laisser en `open`) :
+
+```vhdl
+signal s_x_counter : natural;
+signal s_y_counter : natural;
+```
+
+```vhdl
+o_x_counter => s_x_counter,
+o_y_counter => s_y_counter
+```
+
+```vhdl
+o_hdmi_tx_d <= x"FFFFFF"
+  when (o_hdmi_tx_de = '1'
+        and s_x_counter = to_integer(s_coord_x)
+        and s_y_counter = to_integer(s_coord_y))
+  else x"000000";
+```
+
+### Résultat attendu :
+
+- Fond noir
+- Un pixel blanc visible
+- Le pixel se déplace quand on tourne les encodeurs : encodeur gauche → mouvement horizontal et encodeur droit → mouvement vertical.
+
+![Résultat](./pixel_deplac.png)
 
 
 
