@@ -501,6 +501,34 @@ port map (
 ```
 Le FPGA devient alors un véritable micro-contrôleur RISC-V programmable en C.
 
+## 3. Développement logiciel – Hello World
+
+Un environnement logiciel est généré avec :
+- niosv-bsp → Board Support Package
+- niosv-app → application
+
+Premier test :
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    printf("Hello, world!\n");
+    return 0;
+}
+```
+
+La communication se fait via JTAG UART et le terminal juart-terminal.
+
+Ce test valide :
+
+-le processeur,
+-la mémoire,
+-la chaîne de compilation,
+-la communication PC ↔ FPGA.
+
+
 
 
 
