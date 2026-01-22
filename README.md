@@ -1,4 +1,4 @@
-# TP_VHDL_HIMED_BENJEMAA
+# 2526_ESE_TP_FPGA_HIMED_BENJEMAA
 
 # TP1 – Écran magique
 
