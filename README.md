@@ -338,6 +338,99 @@ o_hdmi_tx_d <= x"FFFFFF" when s_pixel_data = x"FF" else x"000000";
 
 ![Mémorisation](./Dessin_Memo.png)
 
+## 5. Effacement de l’écran (clear du framebuffer)
+
+Objectif : effacer l’écran sur appui d’un bouton (ex : bouton poussoir de l’encodeur gauche).  
+Contrairement au “pixel mobile”, ici on doit **remettre à zéro toute la mémoire** du framebuffer.
+
+Le framebuffer contient `720 * 480` pixels.  
+Effacer l’écran revient à écrire `0x00` sur **toutes les adresses** de la RAM.
+
+---
+
+### 5.1 Comment résoudre le problème ? (principe)
+
+On met en place un petit **automate d’effacement** :
+
+1. Détecter l’appui sur le bouton `PB`
+2. Passer en mode `erase_active = 1`
+3. Parcourir toutes les adresses RAM avec un compteur `erase_addr` :
+   - à chaque cycle d’horloge : écrire `0x00` à l’adresse `erase_addr`
+   - incrémenter `erase_addr`
+4. Quand `erase_addr` atteint la dernière adresse, arrêter (`erase_active = 0`)
+5. Reprendre le fonctionnement normal (écriture des pixels dessinés)
+
+Pendant l’effacement, l’écriture “dessin” est désactivée ou remplacée par l’écriture `0x00`.
+
+---
+
+### 5.2 Implémentation (solution retenue)
+
+Dans notre design, on utilise :
+- **Port A (écriture)** de la DPRAM pour écrire soit :
+  - le pixel dessiné (`0xFF`)
+  - soit un pixel effacé (`0x00`) pendant le clear
+- **Port B (lecture)** pour l’affichage HDMI (inchangé)
+
+On multiplexe donc l’adresse et la donnée d’écriture du port A :
+
+- si `erase_active = 1` :
+  - `addr_a = erase_addr`
+  - `data_a = 0x00`
+- sinon :
+  - `addr_a = coord_x + coord_y * 720`
+  - `data_a = 0xFF`
+
+---
+
+### 5.3 Code essentiel (automate + mux)
+
+#### a) Automate d’effacement
+
+```vhdl
+process(i_clk_50, i_rst_n)
+begin
+  if i_rst_n = '0' then
+    r_erase_active <= '0';
+    r_erase_addr   <= 0;
+
+  elsif rising_edge(i_clk_50) then
+    if i_left_pb = '0' then            -- bouton pressé (actif bas)
+      r_erase_active <= '1';
+      r_erase_addr   <= 0;
+
+    elsif r_erase_active = '1' then
+      if r_erase_addr = (720*480) - 1 then
+        r_erase_active <= '0';         -- fin de l’effacement
+      else
+        r_erase_addr <= r_erase_addr + 1;
+      end if;
+    end if;
+  end if;
+end process;
+```
+#### b) Multiplexage adresse + donnée d’écriture (Port A)
+
+```vhdl
+s_mux_addr_a <= r_erase_addr when r_erase_active = '1' else
+                (to_integer(s_coord_x) + (to_integer(s_coord_y) * 720));
+
+s_mux_data_a <= x"00" when r_erase_active = '1' else x"FF";
+```
+### 5.4 Validation attendue 
+
+- En mode normal : les pixels parcourus sont mémorisés (dessin).
+- En appuyant sur le bouton : l’écran s’efface progressivement (en quelques ms).
+- Après effacement : le dessin repart de zéro.
+
+Avant effacement : 
+![Avant effacement](./Aprés_effacement.png)
+
+Aprés effacement :
+![Aprés effacement](./Avant_effacement.png)
+
+
+
 
 
 
