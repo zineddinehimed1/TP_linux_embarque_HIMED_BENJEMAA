@@ -1,4 +1,4 @@
-# TP_linux_embarque_HIMED_BENJEMAA
+# TP_VHDL_HIMED_BENJEMAA
 
 # TP1 – Écran magique
 
