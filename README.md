@@ -529,16 +529,16 @@ Ce test valide :
 - la communication PC ↔ FPGA.
 
 
-# TP FPGA Avancé – Chenillard
+# 4. Chenillard
 
-## Objectif
+### Objectif
 
 Cette étape consiste à réaliser un **chenillard sur les LED** afin de valider le bon fonctionnement du système et la génération d’un signal périodique.  
 Une seule LED est allumée à la fois et le point lumineux se déplace régulièrement.
 
 ---
 
-## Principe du chenillard
+### Principe du chenillard
 
 Le fonctionnement repose sur trois blocs essentiels :
 
@@ -548,7 +548,7 @@ Le fonctionnement repose sur trois blocs essentiels :
 
 ---
 
-## 1. Génération d’une impulsion lente
+### 1. Génération d’une impulsion lente
 
 Un compteur interne permet de créer un signal `r_toggle_en` qui passe à `1` périodiquement.  
 C’est ce signal qui cadence le déplacement du chenillard.
@@ -564,7 +564,7 @@ end if;
 ```
 Cette partie permet de ralentir l’évolution pour rendre le mouvement visible.
 
-## 2. Mise à jour de l’index de LED
+### 2. Mise à jour de l’index de LED
 À chaque impulsion, l’index de la LED active est incrémenté.
 ```vhdl
 if (r_toggle_en = '1') then 
@@ -577,7 +577,7 @@ end if;
 ```
 L’index évolue de 0 à 9, puis revient à 0.
 
-## 3. Décodage vers les LED (one-hot)
+### 3. Décodage vers les LED (one-hot)
 L’index est transformé en mot binaire pour n’allumer qu’une seule LED.
 ```vhdl
 with to_integer(r_led_index) select
@@ -590,7 +590,7 @@ with to_integer(r_led_index) select
 ```
 Une seule LED est active à la fois, ce qui crée l’effet de chenillard.
 
-## Résultat attendu
+### Résultat attendu
 Sur la carte :
 - une LED est allumée,
 - le point lumineux se déplace régulièrement,
@@ -598,7 +598,7 @@ Sur la carte :
 
 ![Chenillard](./chenillard.gif)
 
-## Conclusion
+### Conclusion
 
 Ce chenillard permet de valider :
 - la génération de temporisations,
