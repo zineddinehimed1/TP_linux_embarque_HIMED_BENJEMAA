@@ -523,10 +523,10 @@ La communication se fait via JTAG UART et le terminal juart-terminal.
 
 Ce test valide :
 
--le processeur,
--la mémoire,
--la chaîne de compilation,
--la communication PC ↔ FPGA.
+- le processeur,
+- la mémoire,
+- la chaîne de compilation,
+- la communication PC ↔ FPGA.
 
 
 
