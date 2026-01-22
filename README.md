@@ -703,14 +703,19 @@ static void wipe_animation(void)
 ```
 Le retournement de la carte déclenche un effacement progressif, reproduisant le comportement d’un écran magique.
 
-### Conclusion
-Ce projet met en œuvre :
-- l’intégration d’un périphérique I2C dans un système Nios V
-- la communication avec un capteur réel (ADXL345)
-- un traitement logiciel temps réel
-- et une interaction physique directe avec la carte
 
-Il illustre concrètement le co-design matériel / logiciel et l’utilisation de capteurs dans un système embarqué sur FPGA.
+## Conclusion générale – TP2 FPGA avancé
+
+Ce TP a permis de mettre en œuvre un système embarqué complet sur FPGA, combinant conception matérielle et développement logiciel.
+
+Dans un premier temps, les bases ont été validées avec l’implémentation d’un chenillard et la prise en main du soft-processeur Nios V, des PIO et de l’environnement de développement.  
+L’intégration du contrôleur I2C et de l’accéléromètre ADXL345 a ensuite permis d’interfacer un capteur réel, de configurer un périphérique externe et d’exploiter des données physiques.
+
+Le niveau à bulles a illustré le traitement logiciel temps réel et l’interaction utilisateur via les LED.  
+Enfin, le retour de l’écran magique, avec l’effacement déclenché par le retournement de la carte, a concrétisé une application complète mêlant vidéo, mémoire, capteurs et logique de contrôle.
+
+Ce TP met en évidence l’intérêt du **co-design matériel / logiciel**, ainsi que la puissance des FPGA pour concevoir des systèmes embarqués modulaires intégrant processeur, périphériques et accélérateurs matériels.
+
 
 
 
