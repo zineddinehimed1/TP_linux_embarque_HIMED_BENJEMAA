@@ -1,6 +1,6 @@
 # TP_linux_embarque_HIMED_BENJEMAA
 
-# TP – Écran magique
+# TP1 – Écran magique
 
 ## Introduction
 
@@ -442,6 +442,64 @@ Le système final permet de **dessiner, conserver et effacer** un tracé en temp
 Ce projet illustre l’intégration de plusieurs briques matérielles (entrées utilisateur, vidéo, mémoire) pour concevoir une application graphique embarquée.
 
 
+
+# TP2 – TP FPGA Avancé – Nios V
+
+Ce TP a pour objectif de concevoir un **système embarqué sur FPGA** autour d’un **soft-processeur Nios V**, combinant matériel (VHDL) et logiciel (C).
+
+Le projet est structuré en plusieurs parties :
+- création d’un micro-contrôleur personnalisé,
+- développement logiciel embarqué,
+- contrôle de périphériques mémoire-mappés,
+- communication I2C,
+- utilisation d’un accéléromètre,
+- intégration finale avec l’écran magique.
+
+---
+
+## 1. Organisation du projet
+
+Le projet est structuré de la manière suivante :
+
+tp_nios_v/
+├── rtl/ → code VHDL
+├── synt/ → projet Quartus
+├── sim/ → simulations Modelsim
+├── sopc/ → configuration Platform Designer (Qsys)
+└── soft/ → code C (Nios V)
+
+
+Cette hiérarchie permet de séparer clairement :
+- le matériel,
+- la synthèse,
+- le soft-processeur,
+- et le logiciel embarqué.
+
+---
+
+## 2. Création du système Nios V
+
+Un système Nios V est construit à l’aide de **Platform Designer**.  
+Il contient :
+
+- Un processeur **Nios V/m**
+- Une **mémoire On-Chip**
+- Une **JTAG UART** (communication PC ↔ FPGA)
+- Un **PIO** (pilotage des LED)
+
+Le système est ensuite généré en VHDL et instancié dans le top-level `tp_nios_v.vhd`.
+
+Extrait minimal :
+
+```vhdl
+nios0 : entity nios.nios
+port map (
+  clk_clk                          => i_clk,
+  reset_reset_n                    => i_rst_n,
+  pio_0_external_connection_export => o_led
+);
+```
+Le FPGA devient alors un véritable micro-contrôleur RISC-V programmable en C.
 
 
 
