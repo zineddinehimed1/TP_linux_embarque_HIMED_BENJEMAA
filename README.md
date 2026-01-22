@@ -426,11 +426,11 @@ s_mux_data_a <= x"00" when r_erase_active = '1' else x"FF";
 
 ### Avant effacement : 
 
-![Avant effacement](./Aprés_effacement.png)
+![Avant effacement](./Avant_effacement.png)
 
 ### Aprés effacement :
 
-![Aprés effacement](./Avant_effacement.png)
+![Aprés effacement](./Aprés_effacement.png)
 
 
 
